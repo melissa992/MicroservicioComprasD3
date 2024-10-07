@@ -44,39 +44,26 @@ pip install -r requirements.txt
 Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
 ```
-FLASK_APP=run.py
-FLASK_ENV=development
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_RECORD_QUERIES = True
 DATABASE_URL=postgresql://usuario:contrasena@localhost:5433/bdcompras
-SECRET_KEY=tu_clave_secreta
+FLASK_CONTEXT = 'development'
 ```
 
 ### 5. **Iniciar los Contenedores Docker**
 
-Asegúrate de tener **Docker** instalado. Luego, ejecuta los contenedores de base de datos con:
+Asegúrate de tener **Docker** instalado, ingresa a la carpeta de docker.
+``` bash
+cd ./docker
+```
+
+Luego, ejecuta los contenedores de base de datos con:
 
 ```bash
 docker-compose up -d
 ```
 
 Esto levantará un contenedor con PostgreSQL en el puerto `5433`.
-
-### 6. **Migraciones de Base de Datos**
-
-Para ejecutar las migraciones en la base de datos, usa:
-
-```bash
-flask db upgrade
-```
-
-### 7. **Ejecutar la Aplicación**
-
-Puedes iniciar el servidor Flask con el siguiente comando:
-
-```bash
-flask run
-```
-
-Accede a la aplicación en [http://localhost:5000](http://localhost:5000).
 
 ## **Estructura del Proyecto**
 
@@ -101,10 +88,10 @@ ms-compras/
 
 ## **Pruebas**
 
-Para ejecutar las pruebas unitarias, usa `pytest`:
+Para ejecutar las pruebas unitarias, usa `unittes`:
 
 ```bash
-pytest
+python -m test.test_name.py
 ```
 
 ## **Docker**
