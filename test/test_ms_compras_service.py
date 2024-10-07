@@ -8,7 +8,6 @@ class TestComprasService(unittest.TestCase):
 
     @patch('app.services.compras_service.requests.post')
     def test_procesar_pago_y_guardar_compra_exitoso(self, mock_post):
-
         # Configuración del mock
         mock_post.return_value.status_code = 200
         
