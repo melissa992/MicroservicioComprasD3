@@ -1,1 +1,0 @@
-from ms_compras_service import Compras_service
