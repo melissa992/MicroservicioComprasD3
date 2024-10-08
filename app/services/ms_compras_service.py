@@ -1,25 +1,45 @@
 from app.models.compras import Compras
 import requests
 
-class Compras_service ():
+class ComprasService:
+    @staticmethod
     def procesar_pago_y_guardar_compra(producto_id, direccion_envio, monto):
         # URL del microservicio de pagos
         url_pago = "http://localhost:5001/procesar_pago"  # Cambia el puerto según corresponda
-    
+        
         # Datos para el pago
         datos_pago = {
             "producto_id": producto_id,
             "monto": monto,
             "direccion_envio": direccion_envio,
         }
+        
         try:
             # Hacer la solicitud al microservicio de pagos
             respuesta = requests.post(url_pago, json=datos_pago)
-        
+
             # Verificar si el pago fue exitoso
             if respuesta.status_code == 200:
                 # Si el pago fue exitoso, guardar la compra
                 compra = Compras.crear_compra(producto_id, direccion_envio)
+
+                # URL del microservicio de inventario
+                url_stock = "http://localhost:5002/stock"  # Cambia el puerto según corresponda
+                
+                # Datos para actualizar stock
+                datos_stock = {
+                    "producto_id": producto_id,
+                    "cantidad": 1  # O la cantidad que desees reducir
+                }
+                
+                # Hacer la solicitud para actualizar el stock
+                respuesta_stock = requests.post(url_stock, json=datos_stock)
+
+                if respuesta_stock.status_code == 200:
+                    print("Stock actualizado exitosamente.")
+                else:
+                    print("Error al actualizar el stock:", respuesta_stock.json())
+
                 return compra
             else:
                 # Manejar error de pago

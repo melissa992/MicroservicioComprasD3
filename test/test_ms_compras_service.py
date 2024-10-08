@@ -1,15 +1,15 @@
 import unittest
 from unittest.mock import patch
 import requests
-from app.services.ms_compras_service import Compras_service
+from app.services.ms_compras_service import ComprasService
 from app.models.compras import Compras
 
 class TestComprasService(unittest.TestCase):
-    compras_service = Compras_service
+    compras_service = ComprasService
 
     @patch('app.services.ms_compras_service.requests.post')
     def test_procesar_pago_y_guardar_compra_exitoso(self, mock_post):
-        # Configuración del mock
+        # Configuración del mock para simular un pago exitoso
         mock_post.return_value.status_code = 200
 
         # Suponiendo que el método crear_compra devuelve un objeto de compra
