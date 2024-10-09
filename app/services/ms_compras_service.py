@@ -1,52 +1,41 @@
 from app.models.compras import Compras
 import requests
+import logging
 
 class ComprasService:
+    URL_PAGO = "http://localhost:5001/procesar_pago"
+    URL_STOCK = "http://localhost:5002/stock"
+
     @staticmethod
-    def procesar_pago_y_guardar_compra(producto_id, direccion_envio, monto):
-        # URL del microservicio de pagos
-        url_pago = "http://localhost:5001/procesar_pago"  # Cambia el puerto según corresponda
-        
-        # Datos para el pago
+    def procesar_pago_y_guardar_compra(producto_id, direccion_envio):
         datos_pago = {
             "producto_id": producto_id,
-            "monto": monto,
             "direccion_envio": direccion_envio,
         }
-        
         try:
-            # Hacer la solicitud al microservicio de pagos
-            respuesta = requests.post(url_pago, json=datos_pago)
-
-            # Verificar si el pago fue exitoso
+            respuesta = requests.post(ComprasService.URL_PAGO, json=datos_pago)
             if respuesta.status_code == 200:
-                # Si el pago fue exitoso, guardar la compra
                 compra = Compras.crear_compra(producto_id, direccion_envio)
-
-                # URL del microservicio de inventario
-                url_stock = "http://localhost:5002/stock"  # Cambia el puerto según corresponda
-                
-                # Datos para actualizar stock
                 datos_stock = {
                     "producto_id": producto_id,
-                    "cantidad": 1  # O la cantidad que desees reducir
+                    "cantidad": 1
                 }
-                
-                # Hacer la solicitud para actualizar el stock
-                respuesta_stock = requests.post(url_stock, json=datos_stock)
-
+                respuesta_stock = requests.post(ComprasService.URL_STOCK, json=datos_stock)
                 if respuesta_stock.status_code == 200:
-                    print("Stock actualizado exitosamente.")
+                    logging.info("Stock actualizado exitosamente.")
                 else:
-                    print("Error al actualizar el stock:", respuesta_stock.json())
-
+                    logging.error("Error al actualizar el stock: %s", respuesta_stock.json())
                 return compra
             else:
-                # Manejar error de pago
-                print("Error al procesar el pago:", respuesta.json())
+                logging.error("Error al procesar el pago: %s", respuesta.json())
                 return None
-            
         except requests.exceptions.RequestException as e:
-            # Manejar errores de conexión
-            print("Error al conectar con el microservicio de pagos:", str(e))
+            logging.error("Error al conectar con el microservicio de pagos: %s", str(e))
+            return None
+
+    def guardar_compra(self, producto_id, direccion_envio):
+        try:
+            return Compras.crear_compra(producto_id, direccion_envio)
+        except Exception as e:
+            logging.error("Error al guardar la compra: %s", str(e))
             return None

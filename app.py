@@ -1,4 +1,5 @@
 from app import create_app
+from app.routes.compras_route import compras_bp
 
 app = create_app()
 
