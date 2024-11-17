@@ -20,7 +20,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes dep
 ### 1. **Clonar el Repositorio**
 
 ```bash
-git clone https://github.com/tu-usuario/ms-compras.git
+git https://github.com/melissa992/MicroservicioComprasD3
 cd ms-compras
 ```
 

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-deployment-compras
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: postgres:15.4-bullseye
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "admin"
+        - name: POSTGRES_DB
+          value: "db_ms_compras"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgresql-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgresql-data
+        emptyDir: {}  # Puede usar PersistentVolumeClaim en producción
+
+containers:
+        - name: compras-container
+          image: melisssa992/micro-compras:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000

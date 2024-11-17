@@ -21,3 +21,5 @@ class Compras(db.Model):
 
     def obtener_compra_por_id(compra_id):
         return Compras.query.get(compra_id)
+    
+

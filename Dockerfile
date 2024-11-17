@@ -8,7 +8,8 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Expose the port your Spring Boot app will run on
+EXPOSE 8000
 
 # Comando para ejecutar la aplicación
 CMD ["python", "app.py"]
