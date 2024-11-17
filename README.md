@@ -110,12 +110,3 @@ docker build -t ms-compras .
 - **Docker** - Para la contenedorización del servicio
 - **pytest** - Framework para pruebas unitarias
 
-## **Contribuciones**
-
-Si deseas contribuir a este proyecto, puedes seguir estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una rama con tus cambios: `git checkout -b feature/nueva-funcionalidad`
-3. Haz commit de tus cambios: `git commit -m 'Agrega nueva funcionalidad'`
-4. Sube la rama a tu fork: `git push origin feature/nueva-funcionalidad`
-5. Abre un pull request en este repositorio.
